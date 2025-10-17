@@ -1,16 +1,14 @@
-package handlers
+package auth
 
 import (
 	"encoding/json"
 	"errors"
 	"net/http"
 
-	"crud/models"
-	"crud/services"
-	"crud/utils"
+	"crud/pkg/utils"
 )
 
-func validateLoginPayload(body models.LoginRequest) error {
+func validateLoginPayload(body LoginRequest) error {
 	if body.Email == "" || body.Password == "" {
 		return errors.New("email & password required")
 	}
@@ -24,7 +22,7 @@ func LoginHandler(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	var req models.LoginRequest
+	var req LoginRequest
 
 	decodeErr := json.NewDecoder(r.Body).Decode(&req)
 	if decodeErr != nil {
@@ -38,14 +36,14 @@ func LoginHandler(
 		return
 	}
 
-	token, authErr := services.AuthenticateUserService(req.Email, req.Password)
+	token, authErr := AuthenticateUserService(req.Email, req.Password)
 	if authErr != nil {
 		http.Error(w, authErr.Error(), http.StatusUnauthorized)
 		return
 	}
 
 	w.Header().Set("Content-Type", "application/json")
-	resp := models.LoginResponse{
+	resp := LoginResponse{
 		Code:    http.StatusOK,
 		Message: "Logged In",
 		Token:   token,

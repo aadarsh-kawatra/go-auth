@@ -7,7 +7,7 @@ import (
 
 	"github.com/joho/godotenv"
 
-	"crud/routes"
+	"crud/internal/routes"
 )
 
 var PORT string = "8000"

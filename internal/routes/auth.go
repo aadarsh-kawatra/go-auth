@@ -3,9 +3,9 @@ package routes
 import (
 	"net/http"
 
-	"crud/handlers"
+	"crud/internal/auth"
 )
 
 func RegisterAuthRoutes(mux *http.ServeMux) {
-	mux.HandleFunc("POST /auth/login", handlers.LoginHandler)
+	mux.HandleFunc("POST /auth/login", auth.LoginHandler)
 }

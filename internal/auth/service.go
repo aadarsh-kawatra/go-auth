@@ -1,9 +1,9 @@
-package services
+package auth
 
 import (
 	"errors"
 
-	"crud/utils"
+	"crud/pkg/utils"
 )
 
 var dummyUser = map[string]string{
