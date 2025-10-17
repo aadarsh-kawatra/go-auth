@@ -1,0 +1,6 @@
+# environment variable
+*.env
+.*env
+
+# build
+*.exe

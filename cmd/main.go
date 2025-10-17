@@ -4,6 +4,10 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+
+	"github.com/joho/godotenv"
+
+	"crud/routes"
 )
 
 var PORT string = "8000"
@@ -13,9 +17,16 @@ type HealthResponse struct {
 }
 
 func main() {
+	dotenvErr := godotenv.Load()
+	if dotenvErr != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/health", healthHandler)
+
+	routes.RegisterAuthRoutes(mux)
 
 	log.Println("Server running on http://localhost:" + PORT)
 	log.Fatal(http.ListenAndServe(":"+PORT, mux))
