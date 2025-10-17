@@ -7,6 +7,7 @@ import (
 
 	"github.com/joho/godotenv"
 
+	"crud/internal/db"
 	"crud/internal/routes"
 )
 
@@ -21,6 +22,8 @@ func main() {
 	if dotenvErr != nil {
 		log.Fatal("Error loading .env file")
 	}
+
+	db.Connect()
 
 	mux := http.NewServeMux()
 

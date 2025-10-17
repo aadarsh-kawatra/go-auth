@@ -3,16 +3,17 @@ package auth
 import (
 	"errors"
 
+	"crud/internal/user"
 	"crud/pkg/utils"
 )
 
-var dummyUser = map[string]string{
-	"admin@example.com": "Admin@123",
-}
-
 func AuthenticateUserService(email, password string) (string, error) {
-	pass, ok := dummyUser[email]
-	if !ok || pass != password {
+	user, err := user.FindUserByEmail(email)
+	if err != nil {
+		return "", errors.New(err.Error())
+	}
+
+	if user == nil || user.Password != password {
 		return "", errors.New("invalid credentials")
 	}
 
