@@ -7,5 +7,6 @@ import (
 )
 
 func RegisterAuthRoutes(mux *http.ServeMux) {
+	mux.HandleFunc("POST /auth/register", auth.RegisterHandler)
 	mux.HandleFunc("POST /auth/login", auth.LoginHandler)
 }

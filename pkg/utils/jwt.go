@@ -15,8 +15,9 @@ func getJwtSecret() []byte {
 	return []byte(secret)
 }
 
-func GenerateToken(email string) (string, error) {
+func GenerateToken(id, email string) (string, error) {
 	claims := jwt.MapClaims{
+		"id":    id,
 		"email": email,
 		"exp":   time.Now().Add(time.Hour * 24).Unix(),
 	}
