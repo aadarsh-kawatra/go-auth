@@ -9,7 +9,7 @@ import (
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 
-	"crud/internal/db"
+	"crud/infrastructure/db"
 	"crud/pkg/utils"
 )
 
