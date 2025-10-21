@@ -43,12 +43,20 @@ func CreateUser(user User) (string, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
+	existsErr := CheckUserExists(user)
+	if existsErr != nil {
+		return "", existsErr
+	}
+
 	hashedPassword, hashErr := utils.GenerateHash(user.Password)
 	if hashErr != nil {
 		return "", hashErr
 	}
 	user.Password = hashedPassword
 	user.CreatedAt = time.Now()
+	if user.Role == "" {
+		user.Role = "user"
+	}
 
 	newUser, createErr := getUserCollection().InsertOne(ctx, user)
 	if createErr != nil {

@@ -15,11 +15,6 @@ func RegisterUserService(firstName, lastName, email, password string) (string, e
 		Password:  password,
 	}
 
-	err := user.CheckUserExists(newUser)
-	if err != nil {
-		return "", errors.New(err.Error())
-	}
-
 	userId, err := user.CreateUser(newUser)
 	if err != nil {
 		return "", errors.New(err.Error())
