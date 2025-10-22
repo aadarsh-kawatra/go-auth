@@ -30,6 +30,7 @@ func main() {
 	mux.HandleFunc("/health", healthHandler)
 
 	routes.RegisterAuthRoutes(mux)
+	routes.RegisterUserRoutes(mux)
 
 	log.Println("Server running on http://localhost:" + PORT)
 	log.Fatal(http.ListenAndServe(":"+PORT, mux))

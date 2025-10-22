@@ -15,3 +15,9 @@ type User struct {
 	Role      string        `bson:"role" json:"role"`
 	CreatedAt time.Time     `bson:"createdAt" json:"createdAt"`
 }
+
+type GetProfileResponse struct {
+	Code    int    `json:"code"`
+	Message string `json:"message"`
+	User    *User  `json:"user"`
+}

@@ -1,6 +1,10 @@
 package utils
 
-import "regexp"
+import (
+	"regexp"
+
+	"go.mongodb.org/mongo-driver/v2/bson"
+)
 
 var EmailRegex = `^[\w.%+-]+@[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,}$`
 
@@ -10,4 +14,9 @@ func IsEmail(email string) bool {
 		return false
 	}
 	return matched
+}
+
+func IsValidObjectID(id string) bool {
+	_, err := bson.ObjectIDFromHex(id)
+	return err == nil
 }

@@ -66,12 +66,12 @@ func CreateUser(user User) (string, error) {
 	return newUser.InsertedID.(bson.ObjectID).Hex(), nil
 }
 
-func FindUserByEmail(email string) (*User, error) {
+func FindUserByKey(key string, value any) (*User, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	var user User
-	dbErr := getUserCollection().FindOne(ctx, bson.M{"email": email}).Decode(&user)
+	dbErr := getUserCollection().FindOne(ctx, bson.M{key: value}).Decode(&user)
 	if dbErr != nil {
 		if errors.Is(dbErr, mongo.ErrNoDocuments) {
 			return nil, nil
@@ -80,4 +80,19 @@ func FindUserByEmail(email string) (*User, error) {
 	}
 
 	return &user, nil
+}
+
+func FindUserByEmail(email string) (*User, error) {
+	return FindUserByKey("email", email)
+}
+
+func FindUserById(id string) (*User, error) {
+	if !utils.IsValidObjectID(id) {
+		return nil, errors.New("invalid ObjectId format")
+	}
+	objectId, err := bson.ObjectIDFromHex(id)
+	if err != nil {
+		return nil, err
+	}
+	return FindUserByKey("_id", objectId)
 }
