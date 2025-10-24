@@ -2,21 +2,10 @@ package auth
 
 import (
 	"encoding/json"
-	"errors"
 	"net/http"
 
 	"crud/pkg/utils"
 )
-
-func validateLoginPayload(body LoginRequest) error {
-	if body.Email == "" || body.Password == "" {
-		return errors.New("email & password required")
-	}
-	if !utils.IsEmail(body.Email) {
-		return errors.New("invalid email")
-	}
-	return nil
-}
 
 func LoginHandler(
 	w http.ResponseWriter,
@@ -30,9 +19,9 @@ func LoginHandler(
 		return
 	}
 
-	validationErr := validateLoginPayload(req)
-	if validationErr != nil {
-		http.Error(w, validationErr.Error(), http.StatusBadRequest)
+	validationErr := utils.ValidateStruct(req)
+	if len(validationErr) > 0 {
+		utils.HandleValidationError(w, validationErr)
 		return
 	}
 
@@ -61,6 +50,12 @@ func RegisterHandler(
 	decodeErr := json.NewDecoder(r.Body).Decode(&req)
 	if decodeErr != nil {
 		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	validationErr := utils.ValidateStruct(req)
+	if len(validationErr) > 0 {
+		utils.HandleValidationError(w, validationErr)
 		return
 	}
 

@@ -7,10 +7,10 @@ type ResponseStruct struct {
 }
 
 type RegisterRequest struct {
-	FirstName string `json:"firstName"`
+	FirstName string `json:"firstName" validate:"required,min=2"`
 	LastName  string `json:"lastName"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
+	Email     string `json:"email" validate:"required,email"`
+	Password  string `json:"password" validate:"required,min=8,max=32"`
 }
 
 type RegisterResponse struct {
@@ -18,8 +18,8 @@ type RegisterResponse struct {
 }
 
 type LoginRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" validate:"required,email"`
+	Password string `json:"password" validate:"required,min=8,max=32"`
 }
 
 type LoginResponse struct {
