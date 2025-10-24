@@ -32,9 +32,9 @@ func LoginHandler(
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 
 	resp := LoginResponse{}
-	resp.Code = http.StatusOK
 	resp.Message = "Logged In"
 	resp.Token = token
 
@@ -66,9 +66,9 @@ func RegisterHandler(
 	}
 
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
 
 	resp := RegisterResponse{}
-	resp.Code = http.StatusCreated
 	resp.Message = "Registered"
 	resp.Token = token
 

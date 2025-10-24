@@ -24,18 +24,17 @@ func GetProfileHandler(
 
 	claims := middlewares.GetUserFromContext(r)
 
-	if claims.Id != userId {
-		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+	err := ValidateUserAccess(userId, claims.Id)
+	if err != nil {
+		var errors []string
+		utils.HandleErrorResponse(w, http.StatusUnauthorized, "Error", append(errors, err.Error()))
 		return
 	}
 
-	user, err := FindUserById(userId)
+	user, err := GetUserProfileService(userId)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
-		return
-	}
-	if user == nil {
-		http.Error(w, "User Not Found", http.StatusBadRequest)
+		var errors []string
+		utils.HandleErrorResponse(w, http.StatusBadRequest, "Error", append(errors, err.Error()))
 		return
 	}
 

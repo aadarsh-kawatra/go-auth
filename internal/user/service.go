@@ -96,3 +96,23 @@ func FindUserById(id string) (*User, error) {
 	}
 	return FindUserByKey("_id", objectId)
 }
+
+func ValidateUserAccess(userId, requestingUserId string) error {
+	if requestingUserId != userId {
+		return errors.New("unauthorized")
+	}
+	return nil
+}
+
+func GetUserProfileService(userId string) (*User, error) {
+	user, err := FindUserById(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	if user == nil {
+		return nil, errors.New("user not found")
+	}
+
+	return user, nil
+}

@@ -6,20 +6,22 @@ import (
 )
 
 type ErrorResponseStruct struct {
-	Code    int      `json:"code"`
 	Message string   `json:"message"`
 	Errors  []string `json:"errors"`
 }
 
-func HandleValidationError(w http.ResponseWriter, validationErrors []string) {
+func HandleErrorResponse(w http.ResponseWriter, code int, message string, errors []string) {
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusBadRequest)
+	w.WriteHeader(code)
 
 	response := ErrorResponseStruct{
-		Code:    http.StatusBadRequest,
-		Message: "Validation failed",
-		Errors:  validationErrors,
+		Message: message,
+		Errors:  errors,
 	}
 
 	json.NewEncoder(w).Encode(response)
+}
+
+func HandleValidationError(w http.ResponseWriter, validationErrors []string) {
+	HandleErrorResponse(w, http.StatusBadRequest, "Validation failed", validationErrors)
 }
